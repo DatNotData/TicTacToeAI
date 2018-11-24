@@ -1,37 +1,56 @@
-import GameManager
+import MatchManager
 import AIPlayer
 import Controller
-
-gameManager = GameManager.GameManager()
-
-HUMAN = 1
-AI = 0
 
 gamePlayed = 0
 humanWin = 0
 aiWin = 0
 
+print('Enter: 0 if human start, 1 if computer start, 2 if alternate')
+starter = int(input())
+
 while True:
     print('\nNEW GAME\n')
-    ai = AIPlayer.AIPlayer(AI, HUMAN)
-    gameManager = GameManager.GameManager()
+    matchManager = MatchManager.GameManager()
 
-    while True:
-        print('AI\' turn')
-        aiMove = ai.update(gameManager.move, gameManager.boardManager.board)
-        gameManager.update(aiMove)
+    if starter == 0 or (starter == 2 and gamePlayed % 2 == 0):
+        while True:
+            HUMAN = 0
+            AI = 1
+            ai = AIPlayer.AIPlayer(AI, HUMAN)
+            position = Controller.Controller.getPosition(matchManager)
+            matchManager.update(position)
 
-        if gameManager.winner is not None or gameManager.move == 9:
-            break
+            if matchManager.winner is not None or matchManager.move == 9:
+                break
 
-        position = Controller.Controller.getPosition(gameManager)
-        gameManager.update(position)
+            print('AI\' turn')
+            aiMove = ai.update(matchManager.move, matchManager.boardManager.board)
+            matchManager.update(aiMove)
 
-        if gameManager.winner is not None or gameManager.move == 9:
-            break
+            if matchManager.winner is not None or matchManager.move == 9:
+                break
+
+    elif starter == 1 or (starter == 2 and gamePlayed % 2 == 1):
+        while True:
+            HUMAN = 1
+            AI = 0
+            ai = AIPlayer.AIPlayer(AI, HUMAN)
+            print('AI\' turn')
+            aiMove = ai.update(matchManager.move, matchManager.boardManager.board)
+            matchManager.update(aiMove)
+
+            if matchManager.winner is not None or matchManager.move == 9:
+                break
+
+            position = Controller.Controller.getPosition(matchManager)
+            matchManager.update(position)
+
+            if matchManager.winner is not None or matchManager.move == 9:
+                break
 
     gamePlayed += 1
-    winner = gameManager.winner
+    winner = matchManager.winner
     if winner == HUMAN:
         winner = 'HUMAN'
         humanWin += 1

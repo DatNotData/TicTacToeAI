@@ -10,8 +10,7 @@ class AIPlayer:
 
     def update(self, move, board):
         # if computer is able to win asap, then do it. if opponent about to win, then block
-        for playerPriority in [self.playerNum,
-                               self.opponentNum]:  # attack first if possible (because we will win anyways
+        for playerPriority in [self.playerNum, self.opponentNum]:  # attack first if possible
             _board = board
             for i in range(4):
                 if _board[0] == _board[1] and _board[0] == playerPriority and _board[2] is None:  # side layer
@@ -101,8 +100,7 @@ class AIPlayer:
                 if _board[0] == self.opponentNum:
                     return [[1, 3], [3, 7], [7, 5], [5, 1]][i][random.randint(0, 1)]
 
-                if _board[1] == self.opponentNum and _board[4] == self.playerNum and _board[7] == (
-                        not self.playerNum):
+                if _board[1] == self.opponentNum and _board[4] == self.playerNum and _board[7] == self.opponentNum:
                     return [0, 2, 6, 8][random.randint(0, 3)]
 
                 _board = BoardManager.rotateBoard(_board)
