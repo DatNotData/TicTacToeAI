@@ -1,52 +1,52 @@
-import MatchManager
-import AIPlayer
-import Controller
+from MatchManager import *
+from BoardManager import *
+from AIPlayer import *
+from Controller import *
 
 gamePlayed = 0
 humanWin = 0
 aiWin = 0
 
-print('Enter: 0 if human start, 1 if computer start, 2 if alternate')
-starter = int(input())
+HUMAN = 0
+AI = 1
+
+starter = int(input('Enter: 0 if human start, 1 if computer start, 2 if alternate >>> '))
+
+def humanRoutine():
+    move = 'qweasdzxc'.index(input('ENTER MOVE >>> '))
+    matchManager.update(HUMAN, move)
+
+def aiRoutine():
+    print('AI\' turn')
+    aiMove = ai.update(matchManager.move, matchManager.boardManager.board)
+    matchManager.update(AI, aiMove)
+
+
 
 while True:
     print('\nNEW GAME\n')
-    matchManager = MatchManager.GameManager()
+    matchManager = GameManager()
 
     if starter == 0 or (starter == 2 and gamePlayed % 2 == 0):
+        ai = AIPlayer(AI, HUMAN)
         while True:
-            HUMAN = 0
-            AI = 1
-            ai = AIPlayer.AIPlayer(AI, HUMAN)
-            position = Controller.Controller.getPosition(matchManager)
-            matchManager.update(position)
-
-            if matchManager.winner is not None or matchManager.move == 9:
+            humanRoutine()
+            if matchManager.isEnd():
                 break
 
-            print('AI\' turn')
-            aiMove = ai.update(matchManager.move, matchManager.boardManager.board)
-            matchManager.update(aiMove)
-
-            if matchManager.winner is not None or matchManager.move == 9:
+            aiRoutine()
+            if matchManager.isEnd():
                 break
 
     elif starter == 1 or (starter == 2 and gamePlayed % 2 == 1):
+        ai = AIPlayer(AI, HUMAN)
         while True:
-            HUMAN = 1
-            AI = 0
-            ai = AIPlayer.AIPlayer(AI, HUMAN)
-            print('AI\' turn')
-            aiMove = ai.update(matchManager.move, matchManager.boardManager.board)
-            matchManager.update(aiMove)
-
-            if matchManager.winner is not None or matchManager.move == 9:
+            aiRoutine()
+            if matchManager.isEnd():
                 break
 
-            position = Controller.Controller.getPosition(matchManager)
-            matchManager.update(position)
-
-            if matchManager.winner is not None or matchManager.move == 9:
+            humanRoutine()
+            if matchManager.isEnd():
                 break
 
     gamePlayed += 1
@@ -63,7 +63,7 @@ while True:
 
     print('%s game played, human won %s times and computer won %s times.' % (gamePlayed, humanWin, aiWin))
 
-    input('Press ENTER to start new game')
+    input(' Reset board and press ENTER to start new game')
 
     print('\n---------------------------------')
     print('-END-END-END-END-END-END-END-END-')

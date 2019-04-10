@@ -1,7 +1,6 @@
 import random
 from BoardManager import *
 
-
 class AIPlayer:
 
     def __init__(self, playerNum, opponentNum):
@@ -18,22 +17,21 @@ class AIPlayer:
                 elif _board[1] == _board[2] and _board[1] == playerPriority and _board[0] is None:
                     return [0, 6, 8, 2][i]
                 elif _board[2] == _board[0] and _board[2] == playerPriority and _board[1] is None:
-
                     return [1, 3, 7, 5][i]
+
                 elif _board[3] == _board[4] and _board[3] == playerPriority and _board[5] is None:  # middle layer
                     return [5, 1, 3, 7][i]
                 elif _board[4] == _board[5] and _board[4] == playerPriority and _board[3] is None:
                     return [3, 7, 5, 2][i]
                 elif _board[5] == _board[3] and _board[5] == playerPriority and _board[4] is None:
-
                     return 4
+
                 elif _board[0] == _board[4] and _board[0] == playerPriority and _board[8] is None:  # diagonal
                     return [8, 2, 0, 6][i]
                 elif _board[8] == _board[0] and _board[8] == playerPriority and _board[4] is None:
                     return 4
 
                 _board = BoardManager.rotateBoard(_board)
-
         # computers starts first
         if move == 0:  # place in corner
             # return 0

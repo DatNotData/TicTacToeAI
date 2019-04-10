@@ -13,7 +13,21 @@ class BoardManager:
             rotated[i] = board[val]
         return rotated
 
-    def printBoard(self):
+    @staticmethod
+    def getMoveFromBoard(before, after):
+        differences = []
+
+        for i in range(9):
+            if before[i] != after[i] and before[i] is None:
+                differences.append(i)
+
+        if len(differences) == 1:
+            move = differences[0]
+            return move, after[move]
+        else:
+            return -1, -1
+
+    def print(self):
         output = ''
         for i in range(3):
             output += '|'
@@ -29,6 +43,9 @@ class BoardManager:
                 output += '|'
             output += '\n'
         print(output)
+
+    def setBoard(self, board):
+        self.board = board
 
     def setMove(self, player, position):
         self.board[position] = player
